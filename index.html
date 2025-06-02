@@ -11,10 +11,20 @@
     <header>
       <div class="header_container">
         <h1>Todo List</h1>
-        <button id="addTodo">
-          Add Todo
-          <img src="./icons/add.svg" alt="add todo button " />
-        </button>
+
+        <div class="header_actions">
+          <form class="filterForm" id="filterForm">
+            <select>
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+            </select>
+          </form>
+          <button id="addTodo">
+            Add Todo
+            <img src="./icons/add.svg" alt="add todo button " />
+          </button>
+        </div>
       </div>
     </header>
     <main>
