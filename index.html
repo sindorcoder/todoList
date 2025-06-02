@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header_container">
+        <h1>Todo List</h1>
+        <button id="addTodo">
+          Add Todo
+          <img src="./icons/add.svg" alt="add todo button " />
+        </button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <ul id="todoList" class="list"></ul>
+      </div>
+    </main>
+
+    <div class="modal" id="modal">
+      <div class="modal_content">
+        <div class="modal_header">
+          <h2>Add Todo</h2>
+          <span class="modal_close" id="closeModal">
+            <img src="./icons/close.svg" alt="close modal " />
+          </span>
+        </div>
+
+        <form class="todoForm" id="todoForm">
+          <input
+            type="text"
+            placeholder="Enter your todo here..."
+            required
+            class="todoForm_input"
+            id="todoInput"
+          />
+          <button type="submit">
+            Add Todo
+            <img src="./icons/add.svg" alt="add todo button " />
+          </button>
+        </form>
+      </div>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
