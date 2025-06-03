@@ -30,9 +30,10 @@ closeModal.addEventListener("click", () => {
 todoForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const todoText = e.target[0].value.trim();
-
   if (todoText != "") {
-    if (todos.some((todo) => todo.text.toLowerCase() === todoText.toLowerCase())) {
+    if (
+      todos.some((todo) => todo.text.toLowerCase() === todoText.toLowerCase())
+    ) {
       alert("Todo already exists!");
       return;
     }
@@ -49,9 +50,27 @@ function renderTodos() {
   if (todos.length === 0) {
     todoList.innerHTML = `<li class="text">Create Todo List</li>`;
   }
+  const date = new Date();
+  const time = date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   todos.forEach((todo, index) => {
     const li = document.createElement("li");
+
+    const date = new Date();
+    const time = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const timeSpan = document.createElement("span");
+    const divText = document.createElement("div");
+    divText.className = "text";
+    timeSpan.className = "time";
+
+    timeSpan.textContent = time;
 
     const completeBtn = createCompleteBtn();
     const deleteBtn = createDeleteBtn();
@@ -61,7 +80,7 @@ function renderTodos() {
     const actionsCompleteBtn = createActionsCompleteBtn();
     const actionsDeleteBtn = createActionsDeleteBtn();
 
-    li.textContent = todo.text[0].toUpperCase() + todo.text.slice(1);
+    divText.textContent = todo.text[0].toUpperCase() + todo.text.slice(1);
     li.className = todo.completed ? "completed" : "list-item";
 
     completeBtn.style.pointerEvents = todo.completed ? "none" : "auto";
@@ -100,13 +119,14 @@ function renderTodos() {
         actionsDiv.style.opacity = "0";
       }
     });
+    li.appendChild(divText);
+    divText.appendChild(timeSpan);
     actionsDiv.appendChild(actionsCompleteBtn);
     actionsDiv.appendChild(actionsDeleteBtn);
     div.appendChild(completeBtn);
     div.appendChild(deleteBtn);
     div.appendChild(actionsMoreBtn);
     li.appendChild(actionsDiv);
-
     li.appendChild(div);
     todoList.appendChild(li);
   });

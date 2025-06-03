@@ -186,6 +186,18 @@ main {
   transition: all 0.3s ease-in-out;
   background-color: transparent !important;
 }
+.text {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+  width: 50%;
+}
+.time {
+  font-size: 20px;
+  font-weight: 500;
+  color: #888;
+}
 
 @media screen and (max-width: 600px) {
   .modal_content {
@@ -228,5 +240,8 @@ main {
   }
   .actions-more-btn {
     display: block;
+  }
+  .time {
+    font-size: 16px;
   }
 }
