@@ -32,7 +32,7 @@ todoForm.addEventListener("submit", (e) => {
   const todoText = e.target[0].value.trim();
 
   if (todoText != "") {
-    if (todos.some((todo) => todo.text.toLowerCase() === todoText)) {
+    if (todos.some((todo) => todo.text.toLowerCase() === todoText.toLowerCase())) {
       alert("Todo already exists!");
       return;
     }
