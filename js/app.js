@@ -69,7 +69,7 @@ function renderTodos() {
 
     todos[index].completed
       ? (completeBtn.style.display = "none")
-      : (completeBtn.style.display = "inline-block");
+      : (completeBtn.style.display = "");
 
     deleteBtn.addEventListener("click", () => {
       todos.splice(index, 1);
