@@ -1,8 +1,5 @@
-@import url(https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap);
-.modal,
-button {
-  transition: 0.3s;
-}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -29,8 +26,15 @@ button {
 ul {
   list-style: none;
 }
+li {
+  position: relative;
+}
 button:hover {
   background-color: #0056b3;
+}
+.modal,
+button {
+  transition: 0.3s ease-in;
 }
 .container,
 .header_container {
@@ -43,7 +47,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0;
+  padding: 20px;
 }
 .modal {
   position: absolute;
@@ -106,11 +110,15 @@ main {
   font-size: 32px;
   color: #333;
 }
-.delete-btn {
+.delete-btn,
+.actionsDeleteBtn {
   background-color: red !important;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
-.complete-btn {
+.complete-btn,
+.actionsCompleteBtn {
   background-color: #28a745 !important;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 .completed,
 .list-item {
@@ -146,4 +154,79 @@ main {
   border: 1px solid #ccc;
   font-size: 16px;
   outline: 0;
+}
+.actionsDiv {
+  opacity: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: white;
+  position: absolute;
+  right: 0;
+  top: -60px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+.actionsDiv::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+  width: 15px;
+  height: 15px;
+  clip-path: polygon(0 0, 100% 0, 53% 100%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  top: 100%;
+  right: 35px;
+}
+.actions-more-btn {
+  display: none;
+  transition: all 0.3s ease-in-out;
+  background-color: transparent !important;
+}
+
+@media screen and (max-width: 600px) {
+  .modal_content {
+    width: 100%;
+  }
+  .todoForm {
+    flex-direction: column;
+  }
+  .todoForm_input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .todoForm button {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .header_container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .header_actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .header_actions select {
+    width: 100%;
+  }
+  .header_actions button {
+    width: 100%;
+  }
+  .todoBtn {
+    gap: 5px;
+  }
+  .complete-btn,
+  .delete-btn {
+    display: none;
+  }
+  .actions-more-btn {
+    display: block;
+  }
 }

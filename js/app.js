@@ -6,6 +6,16 @@ const todoForm = document.getElementById("todoForm");
 const todoList = document.getElementById("todoList");
 const filterForm = document.getElementById("filterForm");
 
+import {
+  createCompleteBtn,
+  createDeleteBtn,
+  createActionsMoreBtn,
+  createDiv,
+  createActionsDiv,
+  createActionsCompleteBtn,
+  createActionsDeleteBtn,
+} from "./button.js";
+
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 addTodo.addEventListener("click", () => {
@@ -24,8 +34,8 @@ todoForm.addEventListener("submit", (e) => {
   if (todoText != "") {
     if (todos.some((todo) => todo.text.toLowerCase() === todoText)) {
       alert("Todo already exists!");
+      return;
     }
-
     todos.push({ text: todoText, completed: false });
     localStorage.setItem("todos", JSON.stringify(todos));
     modal.style.display = "none";
@@ -43,24 +53,36 @@ function renderTodos() {
   todos.forEach((todo, index) => {
     const li = document.createElement("li");
 
+    const completeBtn = createCompleteBtn();
+    const deleteBtn = createDeleteBtn();
+    const actionsMoreBtn = createActionsMoreBtn();
+    const div = createDiv();
+    const actionsDiv = createActionsDiv();
+    const actionsCompleteBtn = createActionsCompleteBtn();
+    const actionsDeleteBtn = createActionsDeleteBtn();
+
     li.textContent = todo.text[0].toUpperCase() + todo.text.slice(1);
     li.className = todo.completed ? "completed" : "list-item";
 
-    const completeBtn = document.createElement("button");
-    const deleteBtn = document.createElement("button");
-    const div = document.createElement("div");
-    div.className = "todoBtn";
-
-    completeBtn.className = "complete-btn";
-
     completeBtn.style.pointerEvents = todo.completed ? "none" : "auto";
+    actionsCompleteBtn.style.pointerEvents = todo.completed ? "none" : "auto";
 
-    deleteBtn.className = "delete-btn";
-    deleteBtn.innerHTML = `<img src="./icons/delete.svg" alt="Delete Todo">`;
-    completeBtn.innerHTML = `<img src="./icons/check.svg" alt="check todo">`;
+    todos[index].completed
+      ? (completeBtn.style.display = "none")
+      : (completeBtn.style.display = "inline-block");
 
     deleteBtn.addEventListener("click", () => {
       todos.splice(index, 1);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      renderTodos();
+    });
+    actionsDeleteBtn.addEventListener("click", () => {
+      todos.splice(index, 1);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      renderTodos();
+    });
+    actionsCompleteBtn.addEventListener("click", () => {
+      todos[index].completed = !todos[index].completed;
       localStorage.setItem("todos", JSON.stringify(todos));
       renderTodos();
     });
@@ -70,8 +92,20 @@ function renderTodos() {
       localStorage.setItem("todos", JSON.stringify(todos));
       renderTodos();
     });
+
+    actionsMoreBtn.addEventListener("click", () => {
+      if (actionsDiv.style.opacity === "0") {
+        actionsDiv.style.opacity = "1";
+      } else {
+        actionsDiv.style.opacity = "0";
+      }
+    });
+    actionsDiv.appendChild(actionsCompleteBtn);
+    actionsDiv.appendChild(actionsDeleteBtn);
     div.appendChild(completeBtn);
     div.appendChild(deleteBtn);
+    div.appendChild(actionsMoreBtn);
+    li.appendChild(actionsDiv);
 
     li.appendChild(div);
     todoList.appendChild(li);
@@ -79,7 +113,6 @@ function renderTodos() {
 }
 
 filterForm.addEventListener("change", (e) => {
-  console.log(e.target.value);
   const filter = e.target.value;
 
   if (filter === "all") {
@@ -92,21 +125,24 @@ filterForm.addEventListener("change", (e) => {
 
       li.textContent = todo.text[0].toUpperCase() + todo.text.slice(1);
       li.className = todo.completed ? "completed" : "list-item";
-
-      const completeBtn = document.createElement("button");
-      const deleteBtn = document.createElement("button");
-      const div = document.createElement("div");
-      div.className = "todoBtn";
-
-      completeBtn.className = "complete-btn";
+      const completeBtn = createCompleteBtn();
+      const deleteBtn = createDeleteBtn();
+      const actionsMoreBtn = createActionsMoreBtn();
+      const div = createDiv();
+      const actionsDiv = createActionsDiv();
+      const actionsCompleteBtn = createActionsCompleteBtn();
+      const actionsDeleteBtn = createActionsDeleteBtn();
 
       completeBtn.style.pointerEvents = todo.completed ? "none" : "auto";
-
-      deleteBtn.className = "delete-btn";
-      deleteBtn.innerHTML = `<img src="./icons/delete.svg" alt="Delete Todo">`;
-      completeBtn.innerHTML = `<img src="./icons/check.svg" alt="check todo">`;
+      actionsCompleteBtn.style.pointerEvents = todo.completed ? "none" : "auto";
 
       deleteBtn.addEventListener("click", () => {
+        todos.splice(index, 1);
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
+      });
+
+      actionsDeleteBtn.addEventListener("click", () => {
         todos.splice(index, 1);
         localStorage.setItem("todos", JSON.stringify(todos));
         renderTodos();
@@ -117,8 +153,25 @@ filterForm.addEventListener("change", (e) => {
         localStorage.setItem("todos", JSON.stringify(todos));
         renderTodos();
       });
+
+      actionsCompleteBtn.addEventListener("click", () => {
+        todos[index].completed = !todos[index].completed;
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
+      });
+      actionsMoreBtn.addEventListener("click", () => {
+        if (actionsDiv.style.opacity === "0") {
+          actionsDiv.style.opacity = "1";
+        } else {
+          actionsDiv.style.opacity = "0";
+        }
+      });
+      actionsDiv.appendChild(actionsCompleteBtn);
+      actionsDiv.appendChild(actionsDeleteBtn);
       div.appendChild(completeBtn);
       div.appendChild(deleteBtn);
+      div.appendChild(actionsMoreBtn);
+      li.appendChild(actionsDiv);
 
       li.appendChild(div);
       todoList.appendChild(li);
@@ -126,7 +179,6 @@ filterForm.addEventListener("change", (e) => {
   } else if (filter === "completed") {
     const completedTodos = todos.filter((todo) => todo.completed);
 
-    console.log(completedTodos);
     todoList.innerHTML = "";
     completedTodos.forEach((todo, index) => {
       const li = document.createElement("li");
@@ -134,32 +186,34 @@ filterForm.addEventListener("change", (e) => {
       li.textContent = todo.text[0].toUpperCase() + todo.text.slice(1);
       li.className = todo.completed ? "completed" : "list-item";
 
-      const completeBtn = document.createElement("button");
-      const deleteBtn = document.createElement("button");
-      const div = document.createElement("div");
-      div.className = "todoBtn";
-
-      completeBtn.className = "complete-btn";
-
-      completeBtn.style.pointerEvents = todo.completed ? "none" : "auto";
-
-      deleteBtn.className = "delete-btn";
-      deleteBtn.innerHTML = `<img src="./icons/delete.svg" alt="Delete Todo">`;
-      completeBtn.innerHTML = `<img src="./icons/check.svg" alt="check todo">`;
+      const deleteBtn = createDeleteBtn();
+      const actionsMoreBtn = createActionsMoreBtn();
+      const div = createDiv();
+      const actionsDiv = createActionsDiv();
+      const actionsDeleteBtn = createActionsDeleteBtn();
 
       deleteBtn.addEventListener("click", () => {
         todos.splice(index, 1);
         localStorage.setItem("todos", JSON.stringify(todos));
         renderTodos();
       });
-
-      completeBtn.addEventListener("click", () => {
-        todos[index].completed = !todos[index].completed;
+      actionsDeleteBtn.addEventListener("click", () => {
+        todos.splice(index, 1);
         localStorage.setItem("todos", JSON.stringify(todos));
         renderTodos();
       });
-      div.appendChild(completeBtn);
+
+      actionsMoreBtn.addEventListener("click", () => {
+        if (actionsDiv.style.opacity === "0") {
+          actionsDiv.style.opacity = "1";
+        } else {
+          actionsDiv.style.opacity = "0";
+        }
+      });
+      actionsDiv.appendChild(actionsDeleteBtn);
       div.appendChild(deleteBtn);
+      div.appendChild(actionsMoreBtn);
+      li.appendChild(actionsDiv);
 
       li.appendChild(div);
       todoList.appendChild(li);
